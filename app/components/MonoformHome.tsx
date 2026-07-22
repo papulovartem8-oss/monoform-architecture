@@ -64,6 +64,7 @@ export function MonoformHome() {
     if (!loaded || !rootRef.current) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const compactMotion = window.matchMedia("(max-width: 768px)").matches;
     let clean = () => {};
 
     void (async () => {
@@ -85,10 +86,29 @@ export function MonoformHome() {
         if (!reduceMotion) {
           gsap.from(".hero__line > span", { yPercent: 110, duration: 1.1, stagger: 0.1, ease: "power3.out" });
           gsap.from(".hero__meta, .hero__body, .hero__actions", { opacity: 0, y: 18, duration: 0.8, stagger: 0.08, delay: 0.25 });
-          gsap.to("[data-hero-image]", {
-            scale: 1.08, ease: "none",
-            scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 1.2 },
+          const heroTimeline = gsap.timeline({
+            scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom bottom", scrub: compactMotion ? 0.65 : 1.15 },
           });
+
+          if (compactMotion) {
+            heroTimeline
+              .to(".hero__content, .hero__scroll", { opacity: 0, y: -22, duration: 0.25 }, 0)
+              .to("[data-hero-image]", { scale: 1.5, opacity: 0, transformOrigin: "54% 62%", duration: 0.65, ease: "power1.in" }, 0)
+              .to(".hero__interior", { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power2.inOut" }, 0.35)
+              .fromTo(".hero__interior img", { scale: 1.12 }, { scale: 1, duration: 0.5, ease: "none" }, 0.35)
+              .fromTo(".hero__entry-copy", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22 }, 0.76);
+          } else {
+            heroTimeline
+              .to(".hero__content, .hero__scroll", { opacity: 0, y: -34, duration: 0.16 }, 0)
+              .to(".hero__veil", { opacity: 0.25, duration: 0.22 }, 0)
+              .to(".hero__portal", { opacity: 1, duration: 0.1 }, 0.05)
+              .to("[data-hero-image]", { scale: 6.2, transformOrigin: "54% 62%", duration: 0.7, ease: "power1.in" }, 0)
+              .to(".hero__portal", { scale: 6.5, opacity: 0, duration: 0.42, ease: "power1.in" }, 0.16)
+              .to(".hero__interior", { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "power2.inOut" }, 0.47)
+              .fromTo(".hero__interior img", { scale: 1.25 }, { scale: 1, duration: 0.48, ease: "none" }, 0.47)
+              .to("[data-hero-image]", { opacity: 0, duration: 0.14 }, 0.56)
+              .fromTo(".hero__entry-copy", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, 0.77);
+          }
           gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
             gsap.from(element, {
               y: 44, opacity: 0, duration: 0.95, ease: "power3.out",
@@ -208,32 +228,39 @@ export function MonoformHome() {
 
       <main id="content">
         <section id="top" className="hero" aria-labelledby="hero-title">
-          <div className="hero__media" data-hero-image>
-            <Image src={site.hero.image} alt={site.hero.alt} fill unoptimized priority sizes="100vw" />
-          </div>
-          <div className="hero__veil" />
-          <div className="hero__content">
-            <div className="hero__meta">
-              <span>{site.brand.descriptor}</span>
-              <span>{site.brand.location}</span>
+          <div className="hero__stage">
+            <div className="hero__media" data-hero-image>
+              <Image src={site.hero.image} alt={site.hero.alt} fill unoptimized priority sizes="100vw" />
             </div>
-            <p className="hero__eyebrow">{site.hero.eyebrow}</p>
-            <h1 id="hero-title">
-              {site.hero.title.split(" ").reduce<string[][]>((lines, word, index) => {
-                const line = index < 2 ? 0 : index < 4 ? 1 : 2;
-                (lines[line] ||= []).push(word);
-                return lines;
-              }, []).map((line, index) => (
-                <span className="hero__line" key={index}><span>{line.join(" ")}</span></span>
-              ))}
-            </h1>
-            <p className="hero__body">{site.hero.body}</p>
-            <div className="hero__actions">
-              <a className="text-link text-link--light" href="#projects">Смотреть проекты <Arrow /></a>
-              <span>{site.brand.years}</span>
+            <div className="hero__veil" />
+            <div className="hero__portal" aria-hidden="true"><span>Общая зона</span></div>
+            <div className="hero__interior">
+              <Image src={site.caseStudy.interiorImage} alt="Интерьер общей зоны Forest Residence" fill unoptimized sizes="100vw" />
+              <div className="hero__entry-copy"><span>Forest Residence</span><strong>Снаружи — внутрь</strong></div>
             </div>
+            <div className="hero__content">
+              <div className="hero__meta">
+                <span>{site.brand.descriptor}</span>
+                <span>{site.brand.location}</span>
+              </div>
+              <p className="hero__eyebrow">{site.hero.eyebrow}</p>
+              <h1 id="hero-title">
+                {site.hero.title.split(" ").reduce<string[][]>((lines, word, index) => {
+                  const line = index < 2 ? 0 : index < 4 ? 1 : 2;
+                  (lines[line] ||= []).push(word);
+                  return lines;
+                }, []).map((line, index) => (
+                  <span className="hero__line" key={index}><span>{line.join(" ")}</span></span>
+                ))}
+              </h1>
+              <p className="hero__body">{site.hero.body}</p>
+              <div className="hero__actions">
+                <a className="text-link text-link--light" href="#projects">Смотреть проекты <Arrow /></a>
+                <span>{site.brand.years}</span>
+              </div>
+            </div>
+            <span className="hero__scroll">Scroll · войти внутрь</span>
           </div>
-          <span className="hero__scroll">Scroll to explore</span>
         </section>
 
         <section id="approach" className="manifesto section-pad">
