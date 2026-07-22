@@ -306,7 +306,17 @@ export function MonoformHome() {
                 </div>
               ) : activeCase === 4 ? (
                 <div className="materials">
-                  <div className="materials__sample" style={{ background: site.caseStudy.materials[activeMaterial].color }} />
+                  <div className="materials__sample">
+                    <Image
+                      key={site.caseStudy.materials[activeMaterial].image}
+                      src={site.caseStudy.materials[activeMaterial].image}
+                      alt={site.caseStudy.materials[activeMaterial].alt}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, 58vw"
+                    />
+                    <div className="materials__sample-meta"><span>Material study</span><span>0{activeMaterial + 1}</span></div>
+                  </div>
                   <div className="materials__copy">
                     <span>0{activeMaterial + 1} / 05</span>
                     <h3>{site.caseStudy.materials[activeMaterial].name}</h3>
@@ -314,7 +324,17 @@ export function MonoformHome() {
                   </div>
                   <div className="materials__palette">
                     {site.caseStudy.materials.map((material, index) => (
-                      <button key={material.name} type="button" style={{ background: material.color }} onMouseEnter={() => setActiveMaterial(index)} onFocus={() => setActiveMaterial(index)} onClick={() => setActiveMaterial(index)} aria-label={material.name} />
+                      <button
+                        key={material.name}
+                        type="button"
+                        className={index === activeMaterial ? "is-active" : ""}
+                        style={{ backgroundImage: `url(${material.image})` }}
+                        onMouseEnter={() => setActiveMaterial(index)}
+                        onFocus={() => setActiveMaterial(index)}
+                        onClick={() => setActiveMaterial(index)}
+                        aria-label={`Показать материал: ${material.name}`}
+                        aria-pressed={index === activeMaterial}
+                      />
                     ))}
                   </div>
                 </div>
