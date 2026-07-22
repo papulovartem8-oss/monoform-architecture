@@ -275,11 +275,10 @@ export function MonoformHome() {
           <div className="case-story">
             <div className="case-visual" aria-live="polite">
               {activeCase === 2 ? (
-                <div className="plan" aria-label="Схематичный план Forest Residence">
-                  <div className="plan__north">N ↑</div>
-                  <div className="plan__shape plan__shape--one" />
-                  <div className="plan__shape plan__shape--two" />
-                  <div className="plan__axis" />
+                <div className="interior-plan" aria-label="Интерьер общей зоны Forest Residence с интерактивными пояснениями">
+                  <Image src={site.caseStudy.interiorImage} alt="Временный фотореалистичный интерьер Forest Residence" fill unoptimized sizes="(max-width: 768px) 100vw, 66vw" />
+                  <div className="interior-plan__veil" />
+                  <span className="interior-plan__eyebrow">Интерьер общей зоны · Forest Residence</span>
                   {site.caseStudy.rooms.map((room, index) => (
                     <button
                       key={room.name}
@@ -292,7 +291,7 @@ export function MonoformHome() {
                       aria-label={`${room.name}: ${room.text}`}
                     ><span>{index + 1}</span></button>
                   ))}
-                  <div className="room-note"><strong>{site.caseStudy.rooms[activeRoom].name}</strong><p>{site.caseStudy.rooms[activeRoom].text}</p></div>
+                  <div className="room-note"><span>0{activeRoom + 1}</span><strong>{site.caseStudy.rooms[activeRoom].name}</strong><p>{site.caseStudy.rooms[activeRoom].text}</p></div>
                 </div>
               ) : activeCase === 3 ? (
                 <div className="comparison">
