@@ -13,7 +13,7 @@ function ProjectCard({ project, priority = false }: { project: Project; priority
     <article className={`project project--${project.layout}`} data-cursor="open">
       <a className="project__link" href="#case-study" aria-label={`Открыть проект ${project.title}`}>
         <div className="project__image image-wrap">
-          <Image src={project.image} alt={project.alt} fill priority={priority} sizes="(max-width: 768px) 100vw, 88vw" />
+          <Image src={project.image} alt={project.alt} fill unoptimized priority={priority} sizes="(max-width: 768px) 100vw, 88vw" />
           <span className="project__index">0{site.projects.indexOf(project) + 1}</span>
         </div>
         <div className="project__meta">
@@ -209,7 +209,7 @@ export function MonoformHome() {
       <main id="content">
         <section id="top" className="hero" aria-labelledby="hero-title">
           <div className="hero__media" data-hero-image>
-            <Image src={site.hero.image} alt={site.hero.alt} fill priority sizes="100vw" />
+            <Image src={site.hero.image} alt={site.hero.alt} fill unoptimized priority sizes="100vw" />
           </div>
           <div className="hero__veil" />
           <div className="hero__content">
@@ -296,9 +296,9 @@ export function MonoformHome() {
                 </div>
               ) : activeCase === 3 ? (
                 <div className="comparison">
-                  <Image src="/projects/house-on-the-ridge/hero.webp" alt="Условное исходное состояние объёма" fill sizes="66vw" />
+                  <Image src="/projects/house-on-the-ridge/hero.webp" alt="Условное исходное состояние объёма" fill unoptimized sizes="66vw" />
                   <div className="comparison__after" style={{ clipPath: `inset(0 ${100 - compare}% 0 0)` }}>
-                    <Image src={site.caseStudy.image} alt="Итоговое архитектурное решение Forest Residence" fill sizes="66vw" />
+                    <Image src={site.caseStudy.image} alt="Итоговое архитектурное решение Forest Residence" fill unoptimized sizes="66vw" />
                   </div>
                   <span className="comparison__label comparison__label--before">До</span>
                   <span className="comparison__label comparison__label--after">После</span>
@@ -321,7 +321,7 @@ export function MonoformHome() {
                 </div>
               ) : (
                 <div className={`case-image case-image--${activeCase}`}>
-                  <Image src={site.caseStudy.image} alt="Временный демонстрационный кадр Forest Residence" fill sizes="(max-width: 768px) 100vw, 66vw" />
+                  <Image src={site.caseStudy.image} alt="Временный демонстрационный кадр Forest Residence" fill unoptimized sizes="(max-width: 768px) 100vw, 66vw" />
                   {activeCase === 1 && <div className="context-lines"><span>Свет 08:20</span><span>Вид на лес</span><span>Сохранённые сосны</span></div>}
                 </div>
               )}
@@ -338,7 +338,7 @@ export function MonoformHome() {
             </div>
           </div>
           <div className="case-result">
-            <div className="image-wrap"><Image src={site.caseStudy.image} alt="Временный итоговый кадр Forest Residence" fill sizes="100vw" /></div>
+            <div className="image-wrap"><Image src={site.caseStudy.image} alt="Временный итоговый кадр Forest Residence" fill unoptimized sizes="100vw" /></div>
             <blockquote className="serif">«{site.caseStudy.stages[5].text}»</blockquote>
             <a href="#contact" className="text-link text-link--light">Обсудить похожий проект <Arrow /></a>
           </div>
@@ -359,7 +359,7 @@ export function MonoformHome() {
               ))}
             </div>
             <div className="scope__visual image-wrap">
-              <Image key={site.projects[activeScope].image} src={site.projects[activeScope].image} alt={site.projects[activeScope].alt} fill sizes="45vw" />
+              <Image key={site.projects[activeScope].image} src={site.projects[activeScope].image} alt={site.projects[activeScope].alt} fill unoptimized sizes="45vw" />
               <span>{site.scope[activeScope].number} — {site.scope[activeScope].title}</span>
             </div>
           </div>
@@ -383,7 +383,7 @@ export function MonoformHome() {
         </section>
 
         <section className="about" aria-labelledby="about-title">
-          <div className="about__image image-wrap"><Image src={site.about.image} alt={site.about.alt} fill sizes="100vw" /></div>
+          <div className="about__image image-wrap"><Image src={site.about.image} alt={site.about.alt} fill unoptimized sizes="100vw" /></div>
           <div className="about__content section-pad">
             <div className="section-label"><span>06</span><p>О бюро</p></div>
             <h2 id="about-title" data-reveal>{site.about.text}</h2>

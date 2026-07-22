@@ -31,5 +31,7 @@ test("server-renders the MONOFORM homepage", async () => {
   assert.match(html, /href="#projects"/);
   assert.match(html, /href="#contact"/);
   assert.match(html, /Перейти к содержанию/);
+  assert.match(html, /\/projects\/house-on-the-ridge\/hero\.webp/);
+  assert.doesNotMatch(html, /\/_vinext\/image/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Starter Project/i);
 });
