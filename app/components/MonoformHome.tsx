@@ -371,6 +371,11 @@ export function MonoformHome() {
                   {activeCase === 1 && <div className="context-lines"><span>Свет 08:20</span><span>Вид на лес</span><span>Сохранённые сосны</span></div>}
                 </div>
               )}
+              <div className={`case-mobile-copy ${activeCase === 4 ? "is-hidden" : ""}`}>
+                <span>{site.caseStudy.stages[activeCase].number} / 06 · {site.caseStudy.stages[activeCase].title}</span>
+                <strong>{activeCase === 2 ? site.caseStudy.rooms[activeRoom].name : site.caseStudy.stages[activeCase].title}</strong>
+                <p>{activeCase === 2 ? site.caseStudy.rooms[activeRoom].text : site.caseStudy.stages[activeCase].text}</p>
+              </div>
               <div className="case-progress"><span style={{ width: `${((activeCase + 1) / site.caseStudy.stages.length) * 100}%` }} /></div>
             </div>
             <div className="case-steps">
