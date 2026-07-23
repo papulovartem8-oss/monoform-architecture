@@ -5,7 +5,11 @@ import { FormEvent, PointerEvent, useEffect, useRef, useState } from "react";
 import { site, type Project } from "../../src/content/site";
 
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
-  return <span aria-hidden="true">{diagonal ? "↗" : "→"}</span>;
+  return (
+    <svg className="icon-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d={diagonal ? "M3 13 13 3M6 3h7v7" : "M2 8h12M9 3l5 5-5 5"} />
+    </svg>
+  );
 }
 
 function ProjectCard({ project, priority = false }: { project: Project; priority?: boolean }) {
@@ -96,7 +100,7 @@ export function MonoformHome() {
               .to("[data-hero-image]", { scale: 1.5, opacity: 0, transformOrigin: "54% 62%", duration: 0.65, ease: "power1.in" }, 0)
               .to(".hero__interior", { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power2.inOut" }, 0.35)
               .fromTo(".hero__interior img", { scale: 1.12 }, { scale: 1, duration: 0.5, ease: "none" }, 0.35)
-              .fromTo(".hero__entry-copy", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22 }, 0.76);
+              .fromTo(".hero__entry-copy, .hero__entry-facts", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22 }, 0.76);
           } else {
             heroTimeline
               .to(".hero__content, .hero__scroll", { opacity: 0, y: -34, duration: 0.16 }, 0)
@@ -107,7 +111,7 @@ export function MonoformHome() {
               .to(".hero__interior", { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "power2.inOut" }, 0.47)
               .fromTo(".hero__interior img", { scale: 1.25 }, { scale: 1, duration: 0.48, ease: "none" }, 0.47)
               .to("[data-hero-image]", { opacity: 0, duration: 0.14 }, 0.56)
-              .fromTo(".hero__entry-copy", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, 0.77);
+              .fromTo(".hero__entry-copy, .hero__entry-facts", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, 0.77);
           }
           gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
             gsap.from(element, {
@@ -236,6 +240,11 @@ export function MonoformHome() {
             <div className="hero__portal" aria-hidden="true"><span>Общая зона</span></div>
             <div className="hero__interior">
               <Image src={site.caseStudy.interiorImage} alt="Интерьер общей зоны Forest Residence" fill unoptimized sizes="100vw" />
+              <div className="hero__entry-facts">
+                <div><span>Тип проекта</span><strong>Архитектура + интерьер</strong></div>
+                <div><span>Площадь</span><strong>610 м²</strong></div>
+                <div><span>Материалы</span><strong>Камень · дуб · микроцемент</strong></div>
+              </div>
               <div className="hero__entry-copy"><span>Forest Residence</span><strong>Снаружи — внутрь</strong></div>
             </div>
             <div className="hero__content">
@@ -244,14 +253,21 @@ export function MonoformHome() {
                 <span>{site.brand.location}</span>
               </div>
               <p className="hero__eyebrow">{site.hero.eyebrow}</p>
-              <h1 id="hero-title">
-                {site.hero.title.split(" ").reduce<string[][]>((lines, word, index) => {
-                  const line = index < 2 ? 0 : index < 4 ? 1 : 2;
-                  (lines[line] ||= []).push(word);
-                  return lines;
-                }, []).map((line, index) => (
-                  <span className="hero__line" key={index}><span>{line.join(" ")}</span></span>
-                ))}
+              <h1 id="hero-title" aria-label={site.hero.title}>
+                <span className="hero__title-desktop" aria-hidden="true">
+                  {site.hero.title.split(" ").reduce<string[][]>((lines, word, index) => {
+                    const line = index < 2 ? 0 : index < 4 ? 1 : 2;
+                    (lines[line] ||= []).push(word);
+                    return lines;
+                  }, []).map((line, index) => (
+                    <span className="hero__line" key={index}><span>{line.join(" ")}</span></span>
+                  ))}
+                </span>
+                <span className="hero__title-mobile" aria-hidden="true">
+                  <span className="hero__line"><span>Пространство</span></span>
+                  <span className="hero__line"><span>как продолжение</span></span>
+                  <span className="hero__line"><span>человека.</span></span>
+                </span>
               </h1>
               <p className="hero__body">{site.hero.body}</p>
               <div className="hero__actions">
@@ -289,7 +305,10 @@ export function MonoformHome() {
           </div>
           <div className="mid-cta" data-reveal>
             <p>Есть участок или пространство,<br />которое хочется переосмыслить?</p>
-            <a className="round-link" href="#contact">Начать разговор <Arrow diagonal /></a>
+            <a className="project-link" href="#contact">
+              <span className="project-link__label">Обсудить проект</span>
+              <span className="project-link__arrow"><Arrow diagonal /></span>
+            </a>
           </div>
         </section>
 
@@ -387,6 +406,52 @@ export function MonoformHome() {
                 </article>
               ))}
             </div>
+          </div>
+          <div className="case-mobile-flow">
+            <article className="mobile-case-card">
+              <div className="mobile-case-card__image">
+                <Image src={site.caseStudy.image} alt="Forest Residence среди соснового леса" fill unoptimized sizes="100vw" />
+                <span>01 / 04</span>
+              </div>
+              <div className="mobile-case-card__copy">
+                <span>01</span>
+                <div><h3>Контекст</h3><p>{site.caseStudy.stages[1].text}</p></div>
+              </div>
+            </article>
+            <article className="mobile-case-card">
+              <div className="mobile-case-card__image">
+                <Image src={site.caseStudy.interiorImage} alt="Интерьер общей зоны Forest Residence" fill unoptimized sizes="100vw" />
+                <span>02 / 04</span>
+              </div>
+              <div className="mobile-case-card__copy">
+                <span>02</span>
+                <div><h3>Общая зона</h3><p>{site.caseStudy.stages[2].text}</p></div>
+              </div>
+            </article>
+            <article className="mobile-case-card">
+              <div className="mobile-case-materials" aria-label="Материалы Forest Residence">
+                {site.caseStudy.materials.slice(0, 3).map((material) => (
+                  <div key={material.name}>
+                    <Image src={material.image} alt={material.alt} fill unoptimized sizes="34vw" />
+                    <span>{material.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mobile-case-card__copy">
+                <span>03</span>
+                <div><h3>Материалы</h3><p>{site.caseStudy.stages[4].text}</p></div>
+              </div>
+            </article>
+            <article className="mobile-case-card mobile-case-card--last">
+              <div className="mobile-case-card__image">
+                <Image src={site.caseStudy.image} alt="Завершённый Forest Residence в ландшафте" fill unoptimized sizes="100vw" />
+                <span>04 / 04</span>
+              </div>
+              <div className="mobile-case-card__copy">
+                <span>04</span>
+                <div><h3>Результат</h3><p>{site.caseStudy.stages[5].text}</p></div>
+              </div>
+            </article>
           </div>
           <div className="case-result">
             <div className="image-wrap"><Image src={site.caseStudy.image} alt="Временный итоговый кадр Forest Residence" fill unoptimized sizes="100vw" /></div>
